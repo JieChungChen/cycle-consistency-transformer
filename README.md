@@ -48,6 +48,10 @@ class Cycle_Consistency_Loss(nn.Module):
 * the code above equals to: <img src="https://github.com/JieChungChen/cycle-consistency-transformer/assets/120712134/b9e5f0b7-98be-410d-957a-2a7ca96e8b35" width="300" alt="img01"/>
 
 ### Result
-* one-to-one connections by epochs
+* one-to-one connections by epochs<br>
 ![7nyzxb](https://github.com/JieChungChen/cycle-consistency-transformer/assets/120712134/656e4664-2577-48bf-b786-6f2eacdaab57)
+
+* one-to-one connections in training & testing set (in testing set, testing curves are the below sequences)
+![image](https://github.com/JieChungChen/cycle-consistency-transformer/assets/120712134/285f3d8c-0e2b-4b4d-856a-dca1d640c9e6)
+
 
