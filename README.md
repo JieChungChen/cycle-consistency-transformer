@@ -4,7 +4,7 @@ The unofficial reproduction of [A transferable lithium-ion battery remaining use
 
 ### Environment
 ```
-torch==1.11.0
+torch==1.13.1
 ```
 
 ### Usage
