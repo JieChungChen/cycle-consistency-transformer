@@ -47,3 +47,7 @@ class Cycle_Consistency_Loss(nn.Module):
 ```
 * the code above equals to: <img src="https://github.com/JieChungChen/cycle-consistency-transformer/assets/120712134/b9e5f0b7-98be-410d-957a-2a7ca96e8b35" width="300" alt="img01"/>
 
+### Result
+* one-to-one connections by epochs
+![7nyzxb](https://github.com/JieChungChen/cycle-consistency-transformer/assets/120712134/656e4664-2577-48bf-b786-6f2eacdaab57)
+
