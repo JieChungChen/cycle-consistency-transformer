@@ -12,6 +12,10 @@ torch==1.11.0
 ```
 python preprocessing.py
 ```
+* Model Training
+```
+python main.py 
+```
 
 ### Cycle Consistency Loss
 ![image](https://github.com/JieChungChen/cycle-consistency-transformer/assets/120712134/abd9176f-398c-4676-b3a7-307a418971dd)
