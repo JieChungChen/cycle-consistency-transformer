@@ -1,5 +1,6 @@
 import matplotlib as mpl
 mpl.use('Agg')
+import matplotlib.pyplot as plt
 import argparse
 import math
 import itertools
@@ -8,9 +9,9 @@ import torch
 from torch import optim
 from torch.utils.data import DataLoader
 from torchinfo import summary
-import matplotlib.pyplot as plt
 from model_architecture import RUL_Transformer, Cycle_Consistency_Loss
 from preprocessing import RUL_Transformer_Dataset
+
 
 def get_args_parser():
     parser = argparse.ArgumentParser('Discharge Model Feature Selector training', add_help=False)
@@ -62,7 +63,7 @@ def main(args):
                 print('epoch:[%d / %d] batch:[%d / %d] loss: %.3f lr: %.2e' % (epoch+1, args.epochs, step, n_minibatch, loss, optimizer.param_groups[0]["lr"]))
 
         if (epoch+1)%100==0:
-            torch.save(model.state_dict(), args.model_name+'_ep'+str(epoch+1001)+'.pth')
+            torch.save(model.state_dict(), args.model_name+'_ep'+str(epoch+1)+'.pth')
 
     # training finished
     loss_profile(trn_loss_record)
