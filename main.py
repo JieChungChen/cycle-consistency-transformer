@@ -21,7 +21,7 @@ def get_args_parser():
 
     # Model parameters
     parser.add_argument('--model_name', default='RUL_Transformer', type=str) 
-    parser.add_argument('--finetune', default=True, type=bool)   
+    parser.add_argument('--finetune', default=False, type=bool)   
     parser.add_argument('--checkpoint', default='RUL_Transformer_ep1000.pth', type=str)                  
 
     # Optimizer parameters
