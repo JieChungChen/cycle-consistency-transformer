@@ -20,12 +20,12 @@ class RUL_Transformer(nn.Module):
                                 nn.ReLU(),
                                 nn.Linear(128, out_ch))
         
-    def forward(self, x):
+    def forward(self, x, mask):
         """
         input shape->(seq_len, batch, ch)
         """
         x = self.linear_in(x)
-        x = torch.add(self.transformer(x), x)
+        x = torch.add(self.transformer(x, src_key_padding_mask=mask), x)
         x = torch.add(self.fc1(x), x)
         x = self.conv_block(x.transpose(2, 1))
         x = self.drop(x)
