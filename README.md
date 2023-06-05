@@ -1,5 +1,7 @@
 ##  Cycle Consistency Transformer for RUL Prediction
 
+the unofficial reproduction of [A transferable lithium-ion battery remaining useful life prediction method from cycle-consistency of degradation trend](https://www.sciencedirect.com/science/article/pii/S0378775322000027?ref=cra_js_challenge&fr=RR-1)
+
 ### Environment
 ```
 torch==1.11.0
