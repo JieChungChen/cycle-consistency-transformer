@@ -7,13 +7,14 @@ from preprocessing import RUL_Transformer_Dataset
 from model_architecture import RUL_Transformer
 
 
-
 def cycle_consistency_visualize(one_to_one=True):
     data = RUL_Transformer_Dataset()
     model = RUL_Transformer(14, 32).cuda()
     model.load_state_dict(torch.load('RUL_Transformer_ep1000.pth'))
+    model.eval()
     seq, src_len = data[0:2]
-    emb = model(torch.tensor(seq).cuda().float()).detach().cpu().numpy()
+    with torch.no_grad():
+        emb = model(torch.tensor(seq).cuda().float()).detach().cpu().numpy()
     seq1, seq2 = emb[0, :src_len[0]//4], emb[1, :src_len[1]//4]
     
     if one_to_one:
