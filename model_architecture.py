@@ -20,12 +20,15 @@ class RUL_Transformer(nn.Module):
                                 nn.ReLU(),
                                 nn.Linear(128, out_ch))
         
-    def forward(self, x, mask):
+    def forward(self, x, mask=None):
         """
         input shape->(seq_len, batch, ch)
         """
         x = self.linear_in(x)
-        x = torch.add(self.transformer(x, src_key_padding_mask=mask), x)
+        if mask is None:
+            x = torch.add(self.transformer(x), x)
+        else:
+            x = torch.add(self.transformer(x, src_key_padding_mask=mask), x)
         x = torch.add(self.fc1(x), x)
         x = self.conv_block(x.transpose(2, 1))
         x = self.drop(x)
@@ -63,5 +66,4 @@ class Cycle_Consistency_Loss(nn.Module):
                 loss_j+=(torch.square(j-u_id)/std_id)+self.penalty*torch.log(torch.sqrt(std_id))
         return (loss_i+loss_j)/len(combinations)
     
-
 
