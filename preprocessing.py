@@ -1,29 +1,14 @@
 import h5py
 import numpy as np
 from scipy.stats import skew, kurtosis
-# import matplotlib as mpl
-# mpl.use('Agg')
+import matplotlib as mpl
+mpl.use('Agg')
 import matplotlib.pyplot as plt
 import os
 from torch.utils.data import Dataset
 
 
-"""
-於'Data-driven prediction of battery cycle life before capacity degradation'中使用的dataset
-由124顆商用LFP電池(APR18650M1A)組成 以快充及4C放電循環至EoL
-其額定電容量為1.11Ah 額定電壓為3.3V
-資料被分為三個batch
-"""
 def mat_to_npy(save_path='Severson_Dataset/extracted_info/'):
-    """
-    將mat檔中需要的資料截取至npy檔
-    包含各電池summary(所有cycle的Qc, Qd, Tmin, Tmax, Tavg, Chargetime)
-    以及partial資訊(到cycle_length為止的各cycle Q, V, I ,T)
-
-    save_path(str): 資料儲存路徑
-    cycle_length(int): 要處理的cycle數量
-    mode(str): 'interp' 或 'uniformqv'
-    """
     filename = ['Severson_Dataset/2017-05-12_batchdata_updated_struct_errorcorrect.mat',
                 'Severson_Dataset/2017-06-30_batchdata_updated_struct_errorcorrect.mat',
                 'Severson_Dataset/2018-04-12_batchdata_updated_struct_errorcorrect.mat']
@@ -79,7 +64,6 @@ def feature_extraction(seq):
         feature_list.append(np.sum(s**2))
         feature_list.append(np.log(np.mean(s**2)))
     return np.array(feature_list)[better_feature_id]
-# mat_to_npy()
 
 
 def train_val_split(train_ratio=0.8, seed=15):
@@ -88,7 +72,6 @@ def train_val_split(train_ratio=0.8, seed=15):
     features = []
     for i in range((len(filename))):
         features.append(np.load(load_path+filename[i]))
-    # 根據seed設定隨機調整順序
     np.random.seed(seed)
     np.random.shuffle(features) 
     split_point = int(len(filename)*train_ratio)
@@ -133,34 +116,6 @@ class RUL_Transformer_Dataset(Dataset):
         plt.show()
         plt.close()
 
-def test(save_path='Severson_Dataset/extracted_info/'):
-    """
-    將mat檔中需要的資料截取至npy檔
-    包含各電池summary(所有cycle的Qc, Qd, Tmin, Tmax, Tavg, Chargetime)
-    以及partial資訊(到cycle_length為止的各cycle Q, V, I ,T)
 
-    save_path(str): 資料儲存路徑
-    cycle_length(int): 要處理的cycle數量
-    mode(str): 'interp' 或 'uniformqv'
-    """
-    filename = ['Severson_Dataset/2017-05-12_batchdata_updated_struct_errorcorrect.mat',
-                'Severson_Dataset/2017-06-30_batchdata_updated_struct_errorcorrect.mat',
-                'Severson_Dataset/2018-04-12_batchdata_updated_struct_errorcorrect.mat']
-    # 各batch中discharge部分有問題的電池 要加以清理
-    b1_err = [4]
-    b2_err = [16]
-    b3_err = []
-    err_list = [b1_err, b2_err, b3_err]
-    full_qd = []
-    for b in range(len(filename)): # batch數
-        f = h5py.File(filename[b], 'r')
-        batch = f['batch']
-        num_cells = batch['summary'].shape[0]
-        for i in range(num_cells): # 該batch下的電池cell數量
-            if i in err_list[b]:
-                full_qd.append(np.hstack(f[batch['summary'][i, 0]]['QDischarge'][0, :].tolist()))
-    full_qd = np.concatenate(full_qd, axis=0)
-    plt.plot(full_qd)
-    plt.show()
-    plt.close()
-            
+if __name__ == '__main__':
+    mat_to_npy()
