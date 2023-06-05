@@ -77,7 +77,6 @@ def loss_profile(trn_loss):
     plt.ylabel('loss', fontsize=14)
     plt.legend()
     plt.savefig('loss_profile.png')
-    # plt.show()
     plt.close()
 
 
