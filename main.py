@@ -22,7 +22,7 @@ def get_args_parser():
     # Model parameters
     parser.add_argument('--model_name', default='RUL_Transformer', type=str) 
     parser.add_argument('--finetune', default=False, type=bool)   
-    parser.add_argument('--checkpoint', default='RUL_Transformer_ep1000.pth', type=str)                  
+    parser.add_argument('--checkpoint', default='RUL_Transformer_mask.pth', type=str)                  
 
     # Optimizer parameters
     parser.add_argument('--weight_decay', type=float, default=0)
@@ -55,9 +55,10 @@ def main(args):
                 mask[i] = mask[i]<src_len[i]
             step += 1
             optimizer.zero_grad()
-            outputs = model(inputs.cuda().float(), mask.cuda())
+            outputs = model(inputs.cuda().float(), mask.cuda().bool())
             loss = criterion(outputs, src_len, combinations)
             loss.backward()
+            trn_loss_record.append(loss)
             optimizer.step()
             if step%args.detail_step==0:
                 print('epoch:[%d / %d] batch:[%d / %d] loss: %.3f lr: %.2e' % (epoch+1, args.epochs, step, n_minibatch, loss, optimizer.param_groups[0]["lr"]))
@@ -74,7 +75,7 @@ def loss_profile(trn_loss):
     plot loss v.s. epoch curve
     """
     plt.plot(np.arange(len(trn_loss)), trn_loss, c='blue', label='trn_loss', ls='--')
-    plt.xlabel('epoch', fontsize=14)
+    plt.xlabel('step', fontsize=14)
     plt.ylabel('loss', fontsize=14)
     plt.legend()
     plt.savefig('loss_profile.png')
